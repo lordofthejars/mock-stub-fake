@@ -11,7 +11,7 @@ html
   head
   meta(charset='utf-8')
   meta(name='viewport', content='width=device-width, initial-scale=1, maximum-scale=1')
-  title Secrets are secrets. Please maintain them as secrets.
+  title Mocks, Stubs and Fakes. ¿What Else?.
 
   link(rel='stylesheet', type='text/css', href='build/build.css')
   link(rel='stylesheet', href='https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css')
@@ -20,8 +20,8 @@ html
 
     article
 
-      +slide('title')
-        h1 <span class='important'>Secrets</span> are secrets. Please <span class='important'>maintain</span> them as <span class='important'>secrets</span>.
+      +slide
+        h1 Mocks, Stubs and Fakes. <br/><span class='important'>¿What Else?</span>.
         aside(role='note') First day, secrets
 
       +slide
@@ -42,199 +42,522 @@ html
           i.fa.fa-twitter &nbsp;alexsotob&nbsp;
           i.fa.fa-github &nbsp;lordofthejars
       
-      +slide('alexband')
-        .image-caption
-          h2 Who <span class='important'>Encrypt</span> Passwords in Resource Files?
+      +slide('ci')
+        h1 Continuous Integration
+        h3 Commit Stage
         div.footer
           i.fa.fa-twitter &nbsp;alexsotob&nbsp;
           i.fa.fa-github &nbsp;lordofthejars
         aside(role='note') Database, JMS, JWT, it is important
       
-      +slide  
-        h2 Apache TomEE Resources
-        pre.small.language-xml
-          code.
-            &lt;Resource id=”myds” type=”DataSource”&gt;
-              JdbcDriver = org.hsqldb.jdbc.JDBCDriver
-              JdbcUrl = jdbc:hsqldb:mem:my-datasource
-              Username = SA
-              Password = SA
-            &lt;/Resource&gt;
+      +slide
+        img.schemas(src='images/ci.png')
+        aside(role='note') Some tools of unit can be used in integration
+      
+      +slide
+        h2 Unit tests
+      
+      +slide
+        h2 FIRST
+        h3 Fast, Isolated, Repeteable, Self-Validating, Timely
+      
+      +slide
+        h2 Elements are interconnected
+      
+      +slide('dummy2')
+        h1 <span class="important">Test</span> Double
+        div.footer
+          i.fa.fa-twitter &nbsp;alexsotob&nbsp;
+          i.fa.fa-github &nbsp;lordofthejars
+        aside(role='note') Replace production object for testing purpose
+        
+      +slide('dummy')
+        h2 Mocks
         div.footer
           i.fa.fa-twitter &nbsp;alexsotob&nbsp;
           i.fa.fa-github &nbsp;lordofthejars
       
-      +slide  
-        h2 Apache TomEE Resources
-        pre.small.language-xml
-          code.
-            &lt;Resource id=”myds” type=”DataSource”&gt;
-              JdbcDriver = org.hsqldb.jdbc.JDBCDriver
-              JdbcUrl = jdbc:hsqldb:mem:my-datasource
-              Username = SA
-              Password = xMH5uM1V9vQzVUv5LG7YLA==
-              PasswordCipher = AES
-            &lt;/Resource&gt;
-            &lt;Resource id=”myresource” class-name="org.superbiz.VaultGateway"&gt;
-              //.....
-              VaultPassword = cipher:AES:xMH5uM1V9vQzVUv5LG7YLA==
-            &lt;/Resource&gt;
+      +slide
+        h2.underline Mocks
+        ul.lists
+          li Pre-programmed with expectations
+          li Behavior Verification
+        div.footer
+          i.fa.fa-twitter &nbsp;alexsotob&nbsp;
+          i.fa.fa-github &nbsp;lordofthejars
+          
+      +slide 
+        h2.underline The Good and <span class="important">The Bad</span>
+        ul.lists
+          li Fast
+          li Easy to write
+          li Versatile
+          li Mockito, EasyMock, jMock
+          li.important Verbose
+          li.important Reimplementing Business
+          li.important No state
+          li.important No executing full stack
         div.footer
           i.fa.fa-twitter &nbsp;alexsotob&nbsp;
           i.fa.fa-github &nbsp;lordofthejars
       
+      +slide('mockito')
+        
       +slide  
-        h2 Implementation
+        h2 Dependencies
         pre.small.language-javascript
           code.
-            public AESPasswordCipher() {
-              this.key = readKeyFromDisk();
-              this.secretKey = new SecretKeySpec(key, "AES");
+            testCompile ('org.mockito:mockito-all:1.10.19') {
+              exclude group: 'org.hamcrest'
+            }
+        div.footer
+          i.fa.fa-twitter &nbsp;alexsotob&nbsp;
+          i.fa.fa-github &nbsp;lordofthejars
+      
+      +slide  
+        h2 Init
+        pre.small.language-javascript
+          code.
+            @RunWith(MockitoJUnitRunner.class)
+            public class Test {
+              @Mock EmailService email;
             }
             
-            public String decrypt(char[] chars) {
-              Cipher cipher = Cipher.getInstance("AES");
-              cipher.init(Cipher.DECRYPT_MODE, secretKey);
+            public class Test {
 
-              byte[] raw = Base64.getDecoder().decode(toByteArray(chars));
-              byte[] stringBytes = cipher.doFinal(raw);
-              String clearText = new String(stringBytes, "UTF8");
-              return clearText;
+              @Mock EmailService email;
+              
+              @Before public void before() {
+                MockitoAnnotations.initMocks(this)
+              }
             }
+            
+            EmailService emailService = Mockito.mock(EmailService.class);
 
-            public char[] encrypt(String s) {}
         div.footer
           i.fa.fa-twitter &nbsp;alexsotob&nbsp;
           i.fa.fa-github &nbsp;lordofthejars
       
-      +slide('chicken')
-        h2.image-caption <span class='important'>Chicken-Egg</span> Problem
+      +slide  
+        h2 Example
+        pre.small.language-javascript
+          code.
+            Mockito.when(email.receiveBodyMessagesWithSubject("My Subject")).thenReturn("This is My Message")
+            
+            System.out.println(email.receiveBodyMessagesWithSubject("Wrong subject"));
+            System.out.println(email.receiveBodyMessagesWithSubject("My Subject"));
+            System.out.println(email.receiveBodyMessagesWithSubject("My Subject"));
         div.footer
           i.fa.fa-twitter &nbsp;alexsotob&nbsp;
           i.fa.fa-github &nbsp;lordofthejars
-        aside(role='note') Now we don't put passwords in clear but we put the key
       
-      +slide('monolith')
-        h2.image-caption <span class='important'>Monolith</span> Application
+      +slide  
+        h2 Example With Any
+        pre.small.language-javascript
+          code.
+            Mockito.when(email.receiveBodyMessagesWithSubject(Matchers.anyString())).thenReturn("This is My Message");
+
+            System.out.println(email.receiveBodyMessagesWithSubject("Subject"));
         div.footer
           i.fa.fa-twitter &nbsp;alexsotob&nbsp;
           i.fa.fa-github &nbsp;lordofthejars
-        aside(role='note') 
-            li It is easy you can delete the file or prompt, but requires manual step
-            li how do we control access to the secret. 
+      
+      +slide  
+        h2 Example Verify
+        pre.small.language-javascript
+          code.
+            InvoiceService invoiceService = new InvoiceService(email);
+            invoiceService.send();
+            
+            Mockito.verify(email, Mockito.times(1)).sendMessage(Matchers.anyString(), Matchers.anyString());
+        div.footer
+          i.fa.fa-twitter &nbsp;alexsotob&nbsp;
+          i.fa.fa-github &nbsp;lordofthejars
+        aside(role='note') not verifying for example the number of emails sent. No state
         
+      +slide  
+        h2 Example Argument Captor
+        pre.small.language-javascript
+          code.
+            InvoiceService invoiceService = new InvoiceService(email);
+            invoiceService.send();
+            
+            ArgumentCaptor<String> argument = ArgumentCaptor.forClass(String.class);
+            Mockito.verify(email, Mockito.times(1)).sendMessage(argument.capture(), Matchers.anyString());
+
+            Assert.assertThat(argument.getValue(), CoreMatchers.startsWith("Invoice:"));
+        div.footer
+          i.fa.fa-twitter &nbsp;alexsotob&nbsp;
+          i.fa.fa-github &nbsp;lordofthejars
+      
+      +slide  
+        h2 Example Spy
+        pre.small.language-javascript
+          code.
+            EmailService email = new EmailService();
+            EmailService spyEmail = Mockito.spy(email);
+            InvoiceService invoiceService = new InvoiceService(spyEmail);
+            invoiceService.send();
+            
+            Mockito.verify(spyEmail, Mockito.times(1)).sendMessage(argument.capture(), Matchers.anyString());
+        div.footer
+          i.fa.fa-twitter &nbsp;alexsotob&nbsp;
+          i.fa.fa-github &nbsp;lordofthejars
+
+      +slide('powermock')
+      
+      +slide  
+        h2 Dependencies
+        pre.small.language-javascript
+          code.
+            testCompile ('org.powermock:powermock-module-junit4:1.6.4')
+            testCompile ('org.powermock:powermock-api-mockito:1.6.4')
+        div.footer
+          i.fa.fa-twitter &nbsp;alexsotob&nbsp;
+          i.fa.fa-github &nbsp;lordofthejars
+      
+      +slide  
+        h2 Prepare for Mocking
+        pre.small.language-javascript
+          code.
+            @RunWith(PowerMockRunner.class)
+            @PrepareForTest(StaticClass.class)
+            public class MyTest {
+            }
+        div.footer
+          i.fa.fa-twitter &nbsp;alexsotob&nbsp;
+          i.fa.fa-github &nbsp;lordofthejars
+      
+      +slide  
+        h2 Mock Static
+        pre.small.language-javascript
+          code.
+            PowerMockito.mockStatic(StaticClass.class);
+            Mockito.when(StaticClass.getValue()).thenReturn("Hello");
+
+            System.out.println(StaticClass.getValue());
+            PowerMockito.verifyStatic();
+        div.footer
+          i.fa.fa-twitter &nbsp;alexsotob&nbsp;
+          i.fa.fa-github &nbsp;lordofthejars
+      
+      +slide  
+        h2 Mock Constructor
+        pre.small.language-javascript
+          code.
+            PowerMockito.whenNew(MyClass.class)
+                          .withNoArguments()
+                          .thenThrow(new IOException("error message"));
+
+            X x = new X();
+            x.createMyClass();
+            PowerMockito.verifyNew(MyClass.class).withNoArguments();
+        div.footer
+          i.fa.fa-twitter &nbsp;alexsotob&nbsp;
+          i.fa.fa-github &nbsp;lordofthejars
+          
+      +slide  
+        h2 Private Method
+        pre.small.language-javascript
+          code.
+            Calculator calculator = PowerMockito.spy(new Calculator());
+            PowerMockito.doReturn(true).when(calculator, "isCalculated");
+
+            System.out.println(calculator.calculate());
+            PowerMockito.verifyPrivate(calculator).invoke("isCalculated");
+        div.footer
+          i.fa.fa-twitter &nbsp;alexsotob&nbsp;
+          i.fa.fa-github &nbsp;lordofthejars
+      
       +slide('adaoh')
-        h2.image-caption <span class='important'>MicroServices</span>?
+        h2 Be Aware
+        h3 It is not Gold everything it Glitters
         div.footer
           i.fa.fa-twitter &nbsp;alexsotob&nbsp;
           i.fa.fa-github &nbsp;lordofthejars
         aside(role='note') 
-            li Spread the problem (decentralizd secrets)
-            li cluster manager which boots automatically services
-            li dynamically scale
-        
-      +slide('vaulth')
-        h1 <b>A tool for <span class='important'>managing secrets</span></b>
-        h3 https://vaultproject.io/
-        
+            li It is so slow 10x
+            li Probably shows you a problem with design
+      
+      +slide  
+        h2 Example of System
+        pre.small.language-javascript
+          code.
+            if (System.currentTimeMillis() > pojo.getStartDate() + expiration) {
+            }
         div.footer
           i.fa.fa-twitter &nbsp;alexsotob&nbsp;
           i.fa.fa-github &nbsp;lordofthejars
-        aside(role='note') 
-            li Vault is a tool for securely accessing secrets. A secret is sensitive information. 
-            li Secret management as a service
+      
+      +slide  
+        h2 Java 8
+        pre.small.language-javascript
+          code.
+            java.time.Clock clock;
+            public void X() {
+              if (eventDate.isBefore(LocalDate.now(clock)) {
+              }
+            }
+        div.footer
+          i.fa.fa-twitter &nbsp;alexsotob&nbsp;
+          i.fa.fa-github &nbsp;lordofthejars
+      
+      +slide  
+        h2 Java
+        pre.small.language-javascript
+          code.
+            TimeResolution clock;
+            public void X() {
+              if (clock.now() > pojo.getStartDate() + expiration) {
+              }
+            }
+        div.footer
+          i.fa.fa-twitter &nbsp;alexsotob&nbsp;
+          i.fa.fa-github &nbsp;lordofthejars
+      
+      +slide('dummy')
+        h2 Stubs
+        div.footer
+          i.fa.fa-twitter &nbsp;alexsotob&nbsp;
+          i.fa.fa-github &nbsp;lordofthejars
       
       +slide
-        h2.underline Vault Features
+        h2.underline Stubs
         ul.lists
-          li Secure Secret Storage
-          li Dynamic Secrets
-          li Data Encryption
-          li Leasing, Renewing, Revocation
-          li Auditing
-          li ACL
-          li Multiple Authentication Methods
-          li.fa.fa-heart &nbsp; REST API
-          
+          li Canned answers to calls
+          li State Verification
         div.footer
           i.fa.fa-twitter &nbsp;alexsotob&nbsp;
           i.fa.fa-github &nbsp;lordofthejars
-        
-        aside(role='note') 
-            li inmem, disk, etcd, consul
-            li generate secrets on-demand 
-            li (last) User/Machine oriented auth
       
-      +slide('silos')
-        h2.image-caption <span class='important'>Secure</span> Secret Storage
+      +slide  
+        h2 Email Service
+        pre.small.language-javascript
+          code.
+            public class EmailServiceStub implements EmailService {
+              private List<Email> emails = new ArrayList<>();
+              
+              public void sendMessage(String subject, String body) {
+                this.emails.add(new Email(subject, body));
+              }
+              
+              public String receiveBodyMessagesWithSubject(String subject) {
+                // ...
+              }
+            }
         div.footer
           i.fa.fa-twitter &nbsp;alexsotob&nbsp;
           i.fa.fa-github &nbsp;lordofthejars
-          
-      +slide('engine')
-        h2 <b>Let's see in Action</b>
+      
+      +slide 
+        h2.underline The Good and <span class="important">The Bad</span>
+        ul.lists
+          li Fast
+          li Easy to write
+          li Versatile
+          li.important Reimplementing Business
+          li.important Logic is outside test
+          li.important State
         div.footer
           i.fa.fa-twitter &nbsp;alexsotob&nbsp;
           i.fa.fa-github &nbsp;lordofthejars
+      
+      +slide('wiremock')
+        div.footer
+          i.fa.fa-twitter &nbsp;alexsotob&nbsp;
+          i.fa.fa-github &nbsp;lordofthejars
+      
+      +slide  
+        h2 Wiremock
+        pre.small.language-javascript
+          code.
+            @Rule
+            public WireMockRule wireMockRule = new WireMockRule(8089);
             
-      +slide('ant')
-        h2.image-caption <span class='important'>Microservices</span> approach
-        aside(role='note') But token auth is the same as before you need to store somewhere
-      
-      +slide('keys')
-        h1 <span class='important'>APPID</span> Auth
-        aside(role='note') 
-            li machine oriented method
-            li provide two elements to access
-
-      +slide
-        h2.underline App ID
-        ul.lists
-          li Random Unique Chunk
-          li Unique to Application (aka Service)
-          li Generated by Operator
-          li Stored in Configuration Management
-        div.footer
-          i.fa.fa-twitter &nbsp;alexsotob&nbsp;
-          i.fa.fa-github &nbsp;lordofthejars
-        aside(role='note') 
-            li UUID
-            li generated by Jenkins
-          
-      +slide
-        h2.underline User ID
-        ul.lists
-          li Intrinsic Properties
-          li Unique to Instance
-          li Generated by Cloud Init Script
-        div.footer
-          i.fa.fa-twitter &nbsp;alexsotob&nbsp;
-          i.fa.fa-github &nbsp;lordofthejars
-        aside(role='note') 
-            li Intrinsic properties IP
+            stubFor(get(urlEqualTo("/planets/"))
+                .willReturn(aResponse()
+                        .withHeader("Content-Type", "application/json")
+                        .withBody(Files.readAllBytes(configFile.toPath())))
+            );
             
-      +slide('appid')
-
-      +slide
-        h2 Each Service
-        h3 login 
-        h2 with Tuple <br /> <span class='important'>{AppID, UserID}</span>
+            client.target("http://localhost:8089/").path("planets/");
+            
         div.footer
           i.fa.fa-twitter &nbsp;alexsotob&nbsp;
           i.fa.fa-github &nbsp;lordofthejars
-          
-      +slide('engine')
-        h2 Let's see in Action
+      
+      +slide('dummy')
+        h2 Fakes
+        div.footer
+          i.fa.fa-twitter &nbsp;alexsotob&nbsp;
+          i.fa.fa-github &nbsp;lordofthejars
+      
+      +slide
+        h2.underline Fakes
+        ul.lists
+          li Working implementations
+          li With shortcuts
+        div.footer
+          i.fa.fa-twitter &nbsp;alexsotob&nbsp;
+          i.fa.fa-github &nbsp;lordofthejars
+      
+      +slide('inmem')
+        div.footer
+          i.fa.fa-twitter &nbsp;alexsotob&nbsp;
+          i.fa.fa-github &nbsp;lordofthejars
+      
+      +slide('fakesmtp')
+        div.footer
+          i.fa.fa-twitter &nbsp;alexsotob&nbsp;
+          i.fa.fa-github &nbsp;lordofthejars
+      
+      +slide('spring')
+        div.footer
+          i.fa.fa-twitter &nbsp;alexsotob&nbsp;
+          i.fa.fa-github &nbsp;lordofthejars
+      
+      +slide 
+        h2.underline The Good and <span class="important">The Bad</span>
+        ul.lists
+          li Almost real
+          li Test full stack
+          li.important Slow
+          li.important Learn New Tech
+          li.important Different Behaviour
+        div.footer
+          i.fa.fa-twitter &nbsp;alexsotob&nbsp;
+          i.fa.fa-github &nbsp;lordofthejars
+      
+      +slide('dummy')
+        h2 Mocking 2.0
+        div.footer
+          i.fa.fa-twitter &nbsp;alexsotob&nbsp;
+          i.fa.fa-github &nbsp;lordofthejars
+        aside(role='note') 
+            li Bytecode modification and implications
+            li Fault injection
+      
+      +slide('byteman')
+        div.footer
+          i.fa.fa-twitter &nbsp;alexsotob&nbsp;
+          i.fa.fa-github &nbsp;lordofthejars
+      
+      +slide  
+        h2 Byteman
+        pre.small.language-javascript
+          code.
+            testCompile ('org.jboss.byteman:byteman-bmunit:3.0.3') {
+              exclude group: 'org.testng'
+            }
+            
+        div.footer
+          i.fa.fa-twitter &nbsp;alexsotob&nbsp;
+          i.fa.fa-github &nbsp;lordofthejars
+      
+      +slide  
+        h2 Byteman
+        pre.small.language-javascript
+          code.
+            public WebWriter(String filename) {
+              this.filename = filename;
+              
+            }
+
+            public PrintStream openFile() {
+              File file = new File(filename);
+              try {
+                FileOutputStream fos = new FileOutputStream(file);
+                PrintStream ps = new PrintStream(fos, true);
+                return ps;
+              } catch (FileNotFoundException e) {
+                System.out.println("Unable to open file " + file.getName());
+                System.out.println(e);
+                return null;
+              }
+            }
+            
+        div.footer
+          i.fa.fa-twitter &nbsp;alexsotob&nbsp;
+          i.fa.fa-github &nbsp;lordofthejars
+      
+      +slide  
+        h2 Byteman
+        pre.small.language-javascript
+          code.
+            @RunWith(org.jboss.byteman.contrib.bmunit.BMUnitRunner.class)
+            public class Test {
+    
+              @Test
+              @BMRule(name = "handle file not found",
+                targetClass = "java.io.FileOutputStream",
+                targetMethod = "<init>(File)",
+                action = "throw new FileNotFoundException( \"Ha ha Byteman fooled you again!\" )"
+              )
+              public void handleFileNotFound() throws FileNotFoundException {
+                System.out.println("-------- handleFileNotFound ---------");
+                WebWriter writer = new WebWriter("foo.html", "Andrew");
+                PrintStream ps = writer.openFile();
+                Assert.assertTrue(ps == null);
+                System.out.println("-------- handleFileNotFound ---------\n");
+              }
+            }
         div.footer
           i.fa.fa-twitter &nbsp;alexsotob&nbsp;
           i.fa.fa-github &nbsp;lordofthejars
       
       +slide('whale')
-        h2.image-caption Example with <span class='important'>Docker</docker>
-     
+        
+        h2 Docker as Test Tool
+      
+        div.footer
+          i.fa.fa-twitter &nbsp;alexsotob&nbsp;
+          i.fa.fa-github &nbsp;lordofthejars
+      
+      +slide('arquillian')
+        div.footer
+          i.fa.fa-twitter &nbsp;alexsotob&nbsp;
+          i.fa.fa-github &nbsp;lordofthejars
+ 
+      +slide('orch')
+        h1 Continuous Integration As Code
+        h3 <span class='important'>Pipeline Plugin</span>
+      
+        div.footer
+          i.fa.fa-twitter &nbsp;alexsotob&nbsp;
+          i.fa.fa-github &nbsp;lordofthejars
+      
       +slide
-        img.schemas(src='images/dockervault.png')
-     
+        img.schemas(src='images/jenkins.jpg')
+      
+      +slide  
+        h2 Jenkinsfile
+        pre.small.language-javascript
+          code.
+            stage 'compileAndUnit'
+            node {
+                    git branch: 'master', url: 'https://github.com/lordofthejars/starwars.git'
+                    gradle 'clean test'
+                    stash excludes: 'build/', includes: '**', name: 'source'
+                    stash includes: 'build/jacoco/*.exec', name: 'unitCodeCoverage'
+                    step([$class: 'JUnitResultArchiver', testResults: '**/build/test-results/*.xml'])
+            }
+            stage 'codeQuality'
+            parallel 'pmd' : {
+                node {
+                    unstash 'source'
+                    gradle 'pmdMain'
+                    step([$class: 'PmdPublisher', pattern: 'build/reports/pmd/*.xml'])
+                }
+            }, 'jacoco': {
+                node {
+                    unstash 'source'
+                    unstash 'unitCodeCoverage'
+                    gradle 'jacocoTestReport'
+                }
+            }
+            
+            input message: "Deploy Application to QA ?"
+      
       +slide('ending')
         h1 Let's wind <br/> down
         div.footer
@@ -242,22 +565,17 @@ html
           i.fa.fa-github &nbsp;lordofthejars
         aside(role='note') Only first taste go to webpage
      
-      +slide('infra')
-        h2.image-caption <span class='important'>Vault</span> is a <span class='important'>Service</span>
+      +slide 
+        h2.underline What You have Seen
+        ul.lists
+          li Unit tests should be FIRST
+          li Mock, Stubs and Fakes
+          li Docker as Testing Tool
+          li Jenkins is not static anymore
         div.footer
           i.fa.fa-twitter &nbsp;alexsotob&nbsp;
           i.fa.fa-github &nbsp;lordofthejars
-        aside(role='note') 
-            li Need to be deployed, 
-            li HA
-            li monitor
-            li it can be used for monolith as well...
-            li cuddles
-      
-      +slide('fence')
-        h2.image-caption There is <span class='important'>NO</span> Silver Bullet
-      
-            
+
       +slide('adarise')
         h1 Questions
         div.footer
