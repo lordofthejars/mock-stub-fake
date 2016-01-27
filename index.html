@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html>
+  <head></head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <title>Mocks, Stubs and Fakes. ¿What Else?.</title>
+  <link rel="stylesheet" type="text/css" href="build/build.css">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+  <body>
+    <article>
+      <section>
+        <h1>Mocks, Stubs and Fakes. <br/><span class='important'>¿What Else?</span>.</h1>
+        <aside role="note">First day, secrets</aside>
+      </section>
+      <section><img src="images/profile.jpg" class="avatar">
+        <h4><i class="fa fa-twitter">alexsotob - lordofthejars.com</i></h4><img src="images/cloudbees.png" class="cloudbees"><img src="images/logos.png" class="logos">
+        <div class="footer"><i class="fa fa-twitter">&nbsp;alexsotob&nbsp;</i><i class="fa fa-github">&nbsp;lordofthejars</i></div>
+      </section>
+      <section>
+        <div class="images"><img src="images/dzone1.png" class="side-by-side"><img src="images/aia.jpg" class="side-by-side"></div>
+        <div class="footer"><i class="fa fa-twitter">&nbsp;alexsotob&nbsp;</i><i class="fa fa-github">&nbsp;lordofthejars</i></div>
+      </section>
+      <section data-bespoke-backdrop="backdrop backdrop--ci" class="ci undefined">
+        <h1>Continuous Integration</h1>
+        <h3>Commit Stage</h3>
+        <div class="footer"><i class="fa fa-twitter">&nbsp;alexsotob&nbsp;</i><i class="fa fa-github">&nbsp;lordofthejars</i></div>
+      </section>
+      <section><img src="images/ci.png" class="schemas">
+        <aside role="note">Some tools of unit can be used in integration</aside>
+      </section>
+      <section data-bespoke-backdrop="backdrop backdrop--unit" class="unit undefined">
+        <h2>Unit tests</h2>
+        <aside role="note">Individual units of source code, talk about what is units</aside>
+      </section>
+      <section>
+        <h2>FIRST</h2>
+        <h3>Fast, Isolated, Repeteable, Self-Validating, Timely</h3>
+      </section>
+      <section data-bespoke-backdrop="backdrop backdrop--interlink" class="interlink undefined">
+        <h2>Applications are complex</h2>
+      </section>
+      <section data-bespoke-backdrop="backdrop backdrop--dummy2" class="dummy2 undefined">
+        <h1><span class="important">Test</span> Double</h1>
+        <div class="footer"><i class="fa fa-twitter">&nbsp;alexsotob&nbsp;</i><i class="fa fa-github">&nbsp;lordofthejars</i></div>
+        <aside role="note">Replace production object for testing purpose</aside>
+      </section>
+      <section data-bespoke-backdrop="backdrop backdrop--dummy" class="dummy undefined">
+        <h2>Mocks</h2>
+        <div class="footer"><i class="fa fa-twitter">&nbsp;alexsotob&nbsp;</i><i class="fa fa-github">&nbsp;lordofthejars</i></div>
+      </section>
+      <section>
+        <h2 class="underline">Mocks</h2>
+        <ul class="lists">
+          <li>Pre-programmed with expectations</li>
+          <li>Behavior Verification</li>
+        </ul>
+        <div class="footer"><i class="fa fa-twitter">&nbsp;alexsotob&nbsp;</i><i class="fa fa-github">&nbsp;lordofthejars</i></div>
+      </section>
+      <section>
+        <h2 class="underline">The Good and <span class="important">The Bad</span></h2>
+        <ul class="lists">
+          <li>Fast</li>
+          <li>Easy to write</li>
+          <li>Versatile</li>
+          <li>Mockito, EasyMock, jMock</li>
+          <li class="important">Verbose</li>
+          <li class="important">Reimplementing Business</li>
+          <li class="important">No state</li>
+          <li class="important">No executing full stack</li>
+        </ul>
+        <div class="footer"><i class="fa fa-twitter">&nbsp;alexsotob&nbsp;</i><i class="fa fa-github">&nbsp;lordofthejars</i></div>
+      </section>
+      <section data-bespoke-backdrop="backdrop backdrop--mockito" class="mockito undefined">
+      </section>
+      <section> 
+        <h2>Dependencies</h2>
+        <pre class="small language-javascript"><code>testCompile ('org.mockito:mockito-all:1.10.19') {
+  exclude group: 'org.hamcrest'
+}</code></pre>
+        <div class="footer"><i class="fa fa-twitter">&nbsp;alexsotob&nbsp;</i><i class="fa fa-github">&nbsp;lordofthejars</i></div>
+      </section>
+      <section> 
+        <h2>Init</h2>
+        <pre class="small language-javascript"><code>@RunWith(MockitoJUnitRunner.class)
+public class Test {
+  @Mock EmailService email;
+}
+
+public class Test {
+
+  @Mock EmailService email;
+  
+  @Before public void before() {
+    MockitoAnnotations.initMocks(this)
+  }
+}
+
+EmailService emailService = Mockito.mock(EmailService.class);
+</code></pre>
+        <div class="footer"><i class="fa fa-twitter">&nbsp;alexsotob&nbsp;</i><i class="fa fa-github">&nbsp;lordofthejars</i></div>
+      </section>
+      <section> 
+        <h2>Example</h2>
+        <pre class="small language-javascript"><code>Mockito.when(email.receiveBodyMessagesWithSubject("My Subject")).thenReturn("This is My Message")
+
+System.out.println(email.receiveBodyMessagesWithSubject("Wrong subject"));
+System.out.println(email.receiveBodyMessagesWithSubject("My Subject"));
+System.out.println(email.receiveBodyMessagesWithSubject("My Subject"));</code></pre>
+        <div class="footer"><i class="fa fa-twitter">&nbsp;alexsotob&nbsp;</i><i class="fa fa-github">&nbsp;lordofthejars</i></div>
+      </section>
+      <section> 
+        <h2>Example With Any</h2>
+        <pre class="small language-javascript"><code>Mockito.when(email.receiveBodyMessagesWithSubject(Matchers.anyString())).thenReturn("This is My Message");
+
+System.out.println(email.receiveBodyMessagesWithSubject("Subject"));</code></pre>
+        <div class="footer"><i class="fa fa-twitter">&nbsp;alexsotob&nbsp;</i><i class="fa fa-github">&nbsp;lordofthejars</i></div>
+      </section>
+      <section> 
+        <h2>Example Verify</h2>
+        <pre class="small language-javascript"><code>InvoiceService invoiceService = new InvoiceService(email);
+invoiceService.send();
+
+Mockito.verify(email, Mockito.times(1)).sendMessage(Matchers.anyString(), Matchers.anyString());</code></pre>
+        <div class="footer"><i class="fa fa-twitter">&nbsp;alexsotob&nbsp;</i><i class="fa fa-github">&nbsp;lordofthejars</i></div>
+        <aside role="note">not verifying for example the number of emails sent. No state</aside>
+      </section>
+      <section> 
+        <h2>Example Argument Captor</h2>
+        <pre class="small language-javascript"><code>InvoiceService invoiceService = new InvoiceService(email);
+invoiceService.send();
+
+ArgumentCaptor<String> argument = ArgumentCaptor.forClass(String.class);
+Mockito.verify(email, Mockito.times(1)).sendMessage(argument.capture(), Matchers.anyString());
+
+Assert.assertThat(argument.getValue(), CoreMatchers.startsWith("Invoice:"));</code></pre>
+        <div class="footer"><i class="fa fa-twitter">&nbsp;alexsotob&nbsp;</i><i class="fa fa-github">&nbsp;lordofthejars</i></div>
+      </section>
+      <section> 
+        <h2>Example Spy</h2>
+        <pre class="small language-javascript"><code>EmailService email = new EmailService();
+EmailService spyEmail = Mockito.spy(email);
+InvoiceService invoiceService = new InvoiceService(spyEmail);
+invoiceService.send();
+
+Mockito.verify(spyEmail, Mockito.times(1)).sendMessage(argument.capture(), Matchers.anyString());</code></pre>
+        <div class="footer"><i class="fa fa-twitter">&nbsp;alexsotob&nbsp;</i><i class="fa fa-github">&nbsp;lordofthejars</i></div>
+      </section>
+      <section data-bespoke-backdrop="backdrop backdrop--powermock" class="powermock undefined">
+      </section>
+      <section> 
+        <h2>Dependencies</h2>
+        <pre class="small language-javascript"><code>testCompile ('org.powermock:powermock-module-junit4:1.6.4')
+testCompile ('org.powermock:powermock-api-mockito:1.6.4')</code></pre>
+        <div class="footer"><i class="fa fa-twitter">&nbsp;alexsotob&nbsp;</i><i class="fa fa-github">&nbsp;lordofthejars</i></div>
+      </section>
+      <section> 
+        <h2>Prepare for Mocking</h2>
+        <pre class="small language-javascript"><code>@RunWith(PowerMockRunner.class)
+@PrepareForTest(StaticClass.class)
+public class MyTest {
+}</code></pre>
+        <div class="footer"><i class="fa fa-twitter">&nbsp;alexsotob&nbsp;</i><i class="fa fa-github">&nbsp;lordofthejars</i></div>
+      </section>
+      <section> 
+        <h2>Mock Static</h2>
+        <pre class="small language-javascript"><code>PowerMockito.mockStatic(StaticClass.class);
+Mockito.when(StaticClass.getValue()).thenReturn("Hello");
+
+System.out.println(StaticClass.getValue());
+PowerMockito.verifyStatic();</code></pre>
+        <div class="footer"><i class="fa fa-twitter">&nbsp;alexsotob&nbsp;</i><i class="fa fa-github">&nbsp;lordofthejars</i></div>
+      </section>
+      <section> 
+        <h2>Mock Constructor</h2>
+        <pre class="small language-javascript"><code>PowerMockito.whenNew(MyClass.class)
+              .withNoArguments()
+              .thenThrow(new IOException("error message"));
+              
+X x = new X();
+x.createMyClass();
+PowerMockito.verifyNew(MyClass.class).withNoArguments();</code></pre>
+        <div class="footer"><i class="fa fa-twitter">&nbsp;alexsotob&nbsp;</i><i class="fa fa-github">&nbsp;lordofthejars</i></div>
+      </section>
+      <section> 
+        <h2>Private Method</h2>
+        <pre class="small language-javascript"><code>Calculator calculator = PowerMockito.spy(new Calculator());
+PowerMockito.doReturn(true).when(calculator, "isCalculated");
+
+System.out.println(calculator.calculate());
+PowerMockito.verifyPrivate(calculator).invoke("isCalculated");</code></pre>
+        <div class="footer"><i class="fa fa-twitter">&nbsp;alexsotob&nbsp;</i><i class="fa fa-github">&nbsp;lordofthejars</i></div>
+      </section>
+      <section data-bespoke-backdrop="backdrop backdrop--adaoh" class="adaoh undefined">
+        <h2>Be Aware</h2>
+        <h3>It is not Gold everything it Glitters</h3>
+        <div class="footer"><i class="fa fa-twitter">&nbsp;alexsotob&nbsp;</i><i class="fa fa-github">&nbsp;lordofthejars</i></div>
+        <aside role="note">
+          <li>It is so slow 10x</li>
+          <li>Probably shows you a problem with design</li>
+        </aside>
+      </section>
+      <section> 
+        <h2>Example of System</h2>
+        <pre class="small language-javascript"><code>if (System.currentTimeMillis() > pojo.getStartDate() + expiration) {
+}</code></pre>
+        <div class="footer"><i class="fa fa-twitter">&nbsp;alexsotob&nbsp;</i><i class="fa fa-github">&nbsp;lordofthejars</i></div>
+      </section>
+      <section> 
+        <h2>Java 8</h2>
+        <pre class="small language-javascript"><code>java.time.Clock clock;
+public void X() {
+  if (eventDate.isBefore(LocalDate.now(clock)) {
+  }
+}</code></pre>
+        <div class="footer"><i class="fa fa-twitter">&nbsp;alexsotob&nbsp;</i><i class="fa fa-github">&nbsp;lordofthejars</i></div>
+      </section>
+      <section> 
+        <h2>Java</h2>
+        <pre class="small language-javascript"><code>TimeResolution clock;
+public void X() {
+  if (clock.now() > pojo.getStartDate() + expiration) {
+  }
+}</code></pre>
+        <div class="footer"><i class="fa fa-twitter">&nbsp;alexsotob&nbsp;</i><i class="fa fa-github">&nbsp;lordofthejars</i></div>
+      </section>
+      <section data-bespoke-backdrop="backdrop backdrop--dummy" class="dummy undefined">
+        <h2>Stubs</h2>
+        <div class="footer"><i class="fa fa-twitter">&nbsp;alexsotob&nbsp;</i><i class="fa fa-github">&nbsp;lordofthejars</i></div>
+      </section>
+      <section>
+        <h2 class="underline">Stubs</h2>
+        <ul class="lists">
+          <li>Canned answers to calls</li>
+          <li>State Verification</li>
+        </ul>
+        <div class="footer"><i class="fa fa-twitter">&nbsp;alexsotob&nbsp;</i><i class="fa fa-github">&nbsp;lordofthejars</i></div>
+      </section>
+      <section> 
+        <h2>Email Service</h2>
+        <pre class="small language-javascript"><code>public class EmailServiceStub implements EmailService {
+  private List<Email> emails = new ArrayList<>();
+  
+  public void sendMessage(String subject, String body) {
+    this.emails.add(new Email(subject, body));
+  }
+  
+  public String receiveBodyMessagesWithSubject(String subject) {
+    // ...
+  }
+}</code></pre>
+        <div class="footer"><i class="fa fa-twitter">&nbsp;alexsotob&nbsp;</i><i class="fa fa-github">&nbsp;lordofthejars</i></div>
+      </section>
+      <section>
+        <h2 class="underline">The Good and <span class="important">The Bad</span></h2>
+        <ul class="lists">
+          <li>Fast</li>
+          <li>Easy to write</li>
+          <li>Versatile</li>
+          <li class="important">Reimplementing Business</li>
+          <li class="important">Logic is outside test</li>
+          <li class="important">State</li>
+        </ul>
+        <div class="footer"><i class="fa fa-twitter">&nbsp;alexsotob&nbsp;</i><i class="fa fa-github">&nbsp;lordofthejars</i></div>
+      </section>
+      <section data-bespoke-backdrop="backdrop backdrop--wiremock" class="wiremock undefined">
+        <div class="footer"><i class="fa fa-twitter">&nbsp;alexsotob&nbsp;</i><i class="fa fa-github">&nbsp;lordofthejars</i></div>
+      </section>
+      <section> 
+        <h2>Wiremock</h2>
+        <pre class="small language-javascript"><code>@Rule
+public WireMockRule wireMockRule = new WireMockRule(8089);
+
+stubFor(get(urlEqualTo("/planets/"))
+    .willReturn(aResponse()
+            .withHeader("Content-Type", "application/json")
+            .withBody(Files.readAllBytes(configFile.toPath())))
+);
+
+client.target("http://localhost:8089/").path("planets/");
+</code></pre>
+        <div class="footer"><i class="fa fa-twitter">&nbsp;alexsotob&nbsp;</i><i class="fa fa-github">&nbsp;lordofthejars</i></div>
+      </section>
+      <section data-bespoke-backdrop="backdrop backdrop--dummy" class="dummy undefined">
+        <h2>Fakes</h2>
+        <div class="footer"><i class="fa fa-twitter">&nbsp;alexsotob&nbsp;</i><i class="fa fa-github">&nbsp;lordofthejars</i></div>
+      </section>
+      <section>
+        <h2 class="underline">Fakes</h2>
+        <ul class="lists">
+          <li>Working implementations</li>
+          <li>With shortcuts</li>
+        </ul>
+        <div class="footer"><i class="fa fa-twitter">&nbsp;alexsotob&nbsp;</i><i class="fa fa-github">&nbsp;lordofthejars</i></div>
+      </section>
+      <section data-bespoke-backdrop="backdrop backdrop--inmem" class="inmem undefined">
+        <div class="footer"><i class="fa fa-twitter">&nbsp;alexsotob&nbsp;</i><i class="fa fa-github">&nbsp;lordofthejars</i></div>
+      </section>
+      <section data-bespoke-backdrop="backdrop backdrop--fakesmtp" class="fakesmtp undefined">
+        <div class="footer"><i class="fa fa-twitter">&nbsp;alexsotob&nbsp;</i><i class="fa fa-github">&nbsp;lordofthejars</i></div>
+      </section>
+      <section data-bespoke-backdrop="backdrop backdrop--spring" class="spring undefined">
+        <div class="footer"><i class="fa fa-twitter">&nbsp;alexsotob&nbsp;</i><i class="fa fa-github">&nbsp;lordofthejars</i></div>
+      </section>
+      <section>
+        <h2 class="underline">The Good and <span class="important">The Bad</span></h2>
+        <ul class="lists">
+          <li>Almost real</li>
+          <li>Test full stack</li>
+          <li class="important">Slow</li>
+          <li class="important">Learn New Tech</li>
+          <li class="important">Different Behaviour</li>
+        </ul>
+        <div class="footer"><i class="fa fa-twitter">&nbsp;alexsotob&nbsp;</i><i class="fa fa-github">&nbsp;lordofthejars</i></div>
+      </section>
+      <section data-bespoke-backdrop="backdrop backdrop--dummy" class="dummy undefined">
+        <h2>Mocking 2.0</h2>
+        <div class="footer"><i class="fa fa-twitter">&nbsp;alexsotob&nbsp;</i><i class="fa fa-github">&nbsp;lordofthejars</i></div>
+        <aside role="note">
+          <li>Bytecode modification and implications</li>
+          <li>Fault injection</li>
+        </aside>
+      </section>
+      <section data-bespoke-backdrop="backdrop backdrop--byteman" class="byteman undefined">
+        <div class="footer"><i class="fa fa-twitter">&nbsp;alexsotob&nbsp;</i><i class="fa fa-github">&nbsp;lordofthejars</i></div>
+      </section>
+      <section> 
+        <h2>Byteman</h2>
+        <pre class="small language-javascript"><code>testCompile ('org.jboss.byteman:byteman-bmunit:3.0.3') {
+  exclude group: 'org.testng'
+}
+</code></pre>
+        <div class="footer"><i class="fa fa-twitter">&nbsp;alexsotob&nbsp;</i><i class="fa fa-github">&nbsp;lordofthejars</i></div>
+      </section>
+      <section> 
+        <h2>Byteman</h2>
+        <pre class="small language-javascript"><code>public WebWriter(String filename) {
+  this.filename = filename;
+  
+}
+
+public PrintStream openFile() {
+  File file = new File(filename);
+  try {
+    FileOutputStream fos = new FileOutputStream(file);
+    PrintStream ps = new PrintStream(fos, true);
+    return ps;
+  } catch (FileNotFoundException e) {
+    System.out.println("Unable to open file " + file.getName());
+    System.out.println(e);
+    return null;
+  }
+}
+</code></pre>
+        <div class="footer"><i class="fa fa-twitter">&nbsp;alexsotob&nbsp;</i><i class="fa fa-github">&nbsp;lordofthejars</i></div>
+      </section>
+      <section> 
+        <h2>Byteman</h2>
+        <pre class="small language-javascript"><code>@RunWith(org.jboss.byteman.contrib.bmunit.BMUnitRunner.class)
+public class Test {
+
+  @Test
+  @BMRule(name = "handle file not found",
+    targetClass = "java.io.FileOutputStream",
+    targetMethod = "<init>(File)",
+    action = "throw new FileNotFoundException( \"Ha ha Byteman fooled you again!\" )"
+  )
+  public void handleFileNotFound() throws FileNotFoundException {
+    System.out.println("-------- handleFileNotFound ---------");
+    WebWriter writer = new WebWriter("foo.html", "Andrew");
+    PrintStream ps = writer.openFile();
+    Assert.assertTrue(ps == null);
+    System.out.println("-------- handleFileNotFound ---------\n");
+  }
+}</code></pre>
+        <div class="footer"><i class="fa fa-twitter">&nbsp;alexsotob&nbsp;</i><i class="fa fa-github">&nbsp;lordofthejars</i></div>
+      </section>
+      <section data-bespoke-backdrop="backdrop backdrop--whale" class="whale undefined">
+        <h2>Docker as Test Tool</h2>
+        <div class="footer"><i class="fa fa-twitter">&nbsp;alexsotob&nbsp;</i><i class="fa fa-github">&nbsp;lordofthejars</i></div>
+      </section>
+      <section data-bespoke-backdrop="backdrop backdrop--arquillian" class="arquillian undefined">
+        <div class="footer"><i class="fa fa-twitter">&nbsp;alexsotob&nbsp;</i><i class="fa fa-github">&nbsp;lordofthejars</i></div>
+      </section>
+      <section data-bespoke-backdrop="backdrop backdrop--orch" class="orch undefined">
+        <h1>Continuous Integration As Code</h1>
+        <h3><span class='important'>Pipeline Plugin</span></h3>
+        <div class="footer"><i class="fa fa-twitter">&nbsp;alexsotob&nbsp;</i><i class="fa fa-github">&nbsp;lordofthejars</i></div>
+      </section>
+      <section><img src="images/jenkins.jpg" class="schemas">
+      </section>
+      <section> 
+        <h2>Jenkinsfile</h2>
+        <pre class="small language-javascript"><code>stage 'compileAndUnit'
+node {
+        git branch: 'master', url: 'https://github.com/lordofthejars/starwars.git'
+        gradle 'clean test'
+        stash excludes: 'build/', includes: '**', name: 'source'
+        stash includes: 'build/jacoco/*.exec', name: 'unitCodeCoverage'
+        step([$class: 'JUnitResultArchiver', testResults: '**/build/test-results/*.xml'])
+}
+stage 'codeQuality'
+parallel 'pmd' : {
+    node {
+        unstash 'source'
+        gradle 'pmdMain'
+        step([$class: 'PmdPublisher', pattern: 'build/reports/pmd/*.xml'])
+    }
+}, 'jacoco': {
+    node {
+        unstash 'source'
+        unstash 'unitCodeCoverage'
+        gradle 'jacocoTestReport'
+    }
+}
+
+input message: "Deploy Application to QA ?"
+</code></pre>
+      </section>
+      <section><img src="images/ui.png" class="schemash">
+      </section>
+      <section data-bespoke-backdrop="backdrop backdrop--adathink" class="adathink undefined">
+        <h1>Let's wind <br/> down</h1>
+        <div class="footer"><i class="fa fa-twitter">&nbsp;alexsotob&nbsp;</i><i class="fa fa-github">&nbsp;lordofthejars</i></div>
+        <aside role="note">Only first taste go to webpage</aside>
+      </section>
+      <section>
+        <h2 class="underline">What You have Seen</h2>
+        <ul class="lists">
+          <li>Unit tests should be FIRST</li>
+          <li>Mock, Stubs and Fakes</li>
+          <li>Docker as Testing Tool</li>
+          <li>Jenkins is not static anymore</li>
+        </ul>
+        <div class="footer"><i class="fa fa-twitter">&nbsp;alexsotob&nbsp;</i><i class="fa fa-github">&nbsp;lordofthejars</i></div>
+      </section>
+      <section data-bespoke-backdrop="backdrop backdrop--adarise" class="adarise undefined">
+        <h1>Questions</h1>
+        <div class="footer"><i class="fa fa-twitter">&nbsp;alexsotob&nbsp;</i><i class="fa fa-github">&nbsp;lordofthejars</i></div>
+      </section>
+      <section><img src="images/profile.jpg" class="avatar"><br><a href="http://lordofthejars.github.io/mock-stub-fake/" style="border:none"><i class="fa fa-github"></i>
+          <h3>http://lordofthejars.github.io/mock-stub-fake/</h3><i class="fa fa-envelope"></i>
+          <h3>asotobu@gmail.com</h3></a>
+        <div class="footer"><i class="fa fa-twitter">&nbsp;alexsotob&nbsp;</i><i class="fa fa-github">&nbsp;lordofthejars</i></div>
+      </section>
+    </article>
+    <script src="build/build.js"></script>
+  </body>
+</html>
