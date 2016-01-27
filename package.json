@@ -5,7 +5,7 @@
   "main": "index.js",
   "repository": {
     "type": "git",
-    "url": "git@github.com:lordofthejars/javaee_devoxx.git"
+    "url": "git@github.com:lordofthejars/mock-stub-fake.git"
   },
   "scripts": {
     "serve": "gulp serve",
