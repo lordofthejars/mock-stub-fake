@@ -20,7 +20,7 @@ html
 
     article
 
-      +slide
+      +slide('title')
         h1 Mocks, Stubs and Fakes. <br/><span class='important'>¿What Else?</span>.
         aside(role='note') First day, secrets
 
@@ -44,7 +44,7 @@ html
       
       +slide('ci')
         h1 Continuous Integration
-        h3 Commit Stage
+        h3 <span class="important">Commit Stage</span>
         div.footer
           i.fa.fa-twitter &nbsp;alexsotob&nbsp;
           i.fa.fa-github &nbsp;lordofthejars
@@ -270,7 +270,7 @@ html
           i.fa.fa-twitter &nbsp;alexsotob&nbsp;
           i.fa.fa-github &nbsp;lordofthejars
       
-      +slide('adaoh')
+      +slide('alexoh')
         h2 Be Aware
         h3 All that Glitters is not Gold
         div.footer
@@ -508,7 +508,7 @@ html
       
       +slide('whale')
         
-        h2 Docker as Test Tool
+        h2 Docker as <span class='important'>Testing Tool</span>
       
         div.footer
           i.fa.fa-twitter &nbsp;alexsotob&nbsp;
@@ -518,7 +518,8 @@ html
         div.footer
           i.fa.fa-twitter &nbsp;alexsotob&nbsp;
           i.fa.fa-github &nbsp;lordofthejars
- 
+        aside(role='note') Slow tests are important in Commit stage as well (Happy)
+        
       +slide('orch')
         h1 Continuous Integration As Code
         h3 <span class='important'>Pipeline Plugin</span>
@@ -526,12 +527,13 @@ html
         div.footer
           i.fa.fa-twitter &nbsp;alexsotob&nbsp;
           i.fa.fa-github &nbsp;lordofthejars
-      
+        aside(role='note') Groovy DSL  
+          
       +slide
         img.schemas(src='images/jenkins.jpg')
       
       +slide  
-        h2 Jenkinsfile
+        h2 Jenkinsfile (1/2)
         pre.small.language-javascript
           code.
             stage 'compileAndUnit'
@@ -542,6 +544,7 @@ html
                     stash includes: 'build/jacoco/*.exec', name: 'unitCodeCoverage'
                     step([$class: 'JUnitResultArchiver', testResults: '**/build/test-results/*.xml'])
             }
+            
             stage 'codeQuality'
             parallel 'pmd' : {
                 node {
@@ -556,8 +559,26 @@ html
                     gradle 'jacocoTestReport'
                 }
             }
+      
+      +slide  
+        h2 Jenkinsfile (2/2)
+        pre.small.language-javascript
+          code.
+            stage 'assemble-binaries'
+
+            node('linux') {
+                unstash 'source'
+                withEnv(["SOURCE_BUILD_NUMBER=${env.BUILD_NUMBER}"]) {
+                    gradle 'assemble'
+                }
+            }
             
             input message: "Deploy Application to QA ?"
+
+            stage name: 'Deploy to QA', concurrency: 1
+            node {
+                echo "Application Deployed to QA."
+            }
       
       +slide
         img.schemash(src='images/ui.png')
@@ -574,12 +595,14 @@ html
         ul.lists
           li Unit tests should be FIRST
           li Mock, Stubs and Fakes
+          li PowerMock as Design Warning
           li Docker as Testing Tool
           li Jenkins is not static anymore
         div.footer
           i.fa.fa-twitter &nbsp;alexsotob&nbsp;
           i.fa.fa-github &nbsp;lordofthejars
-
+        aside(role='note') Fast is the parameter (10 minutes)
+        
       +slide
         img.schemash(src='images/YourAppV2-min.png')
 
