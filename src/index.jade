@@ -523,7 +523,7 @@ html
       +slide('orch')
         h1 Continuous Integration As Code
         h3 <span class='important'>Pipeline Plugin</span>
-      
+        
         div.footer
           i.fa.fa-twitter &nbsp;alexsotob&nbsp;
           i.fa.fa-github &nbsp;lordofthejars
@@ -531,6 +531,9 @@ html
           
       +slide
         img.schemas(src='images/jenkins.jpg')
+        div.footer
+          i.fa.fa-twitter &nbsp;alexsotob&nbsp;
+          i.fa.fa-github &nbsp;lordofthejars
       
       +slide  
         h2 Jenkinsfile (1/2)
@@ -559,6 +562,9 @@ html
                     gradle 'jacocoTestReport'
                 }
             }
+        div.footer
+          i.fa.fa-twitter &nbsp;alexsotob&nbsp;
+          i.fa.fa-github &nbsp;lordofthejars
       
       +slide  
         h2 Jenkinsfile (2/2)
@@ -579,9 +585,15 @@ html
             node {
                 echo "Application Deployed to QA."
             }
+        div.footer
+          i.fa.fa-twitter &nbsp;alexsotob&nbsp;
+          i.fa.fa-github &nbsp;lordofthejars
       
       +slide
         img.schemash(src='images/ui.png')
+        div.footer
+          i.fa.fa-twitter &nbsp;alexsotob&nbsp;
+          i.fa.fa-github &nbsp;lordofthejars
       
       +slide('adathink')
         h1 Let's wind <br/> down
@@ -605,6 +617,9 @@ html
         
       +slide
         img.schemash(src='images/YourAppV2-min.png')
+        div.footer
+          i.fa.fa-twitter &nbsp;alexsotob&nbsp;
+          i.fa.fa-github &nbsp;lordofthejars
 
       +slide('adarise')
         h1 Questions
@@ -623,5 +638,22 @@ html
         div.footer
           i.fa.fa-twitter &nbsp;alexsotob&nbsp;
           i.fa.fa-github &nbsp;lordofthejars
+      
+      +slide
+        a(href='github.com/lordofthejars/starwars', style='border:none')  
+          h4 https://github.com/lordofthejars/starwars
+        a(href='http://site.mockito.org/', style='border:none')  
+          h4 http://site.mockito.org/
+        a(href='https://github.com/jayway/powermock', style='border:none')  
+          h4 https://github.com/jayway/powermock
+        a(href='http://wiremock.org/', style='border:none')  
+          h4 http://wiremock.org/
+        a(href='http://arquillian.org/', style='border:none')  
+          h4 http://arquillian.org/
+        a(href='http://byteman.jboss.org/', style='border:none')  
+          h4 http://byteman.jboss.org/
+        a(href='https://github.com/jenkinsci/workflow-plugin', style='border:none')  
+          h4 https://github.com/jenkinsci/workflow-plugin
+          
       
     script(src='build/build.js')
