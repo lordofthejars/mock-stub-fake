@@ -390,6 +390,7 @@ public class Test {
         <aside role="note">Groovy DSL  </aside>
       </section>
       <section><img src="images/jenkins.jpg" class="schemas">
+        <div class="footer"><i class="fa fa-twitter">&nbsp;alexsotob&nbsp;</i><i class="fa fa-github">&nbsp;lordofthejars</i></div>
       </section>
       <section> 
         <h2>Jenkinsfile (1/2)</h2>
@@ -415,8 +416,8 @@ parallel 'pmd' : {
         unstash 'unitCodeCoverage'
         gradle 'jacocoTestReport'
     }
-}
-</code></pre>
+}</code></pre>
+        <div class="footer"><i class="fa fa-twitter">&nbsp;alexsotob&nbsp;</i><i class="fa fa-github">&nbsp;lordofthejars</i></div>
       </section>
       <section> 
         <h2>Jenkinsfile (2/2)</h2>
@@ -434,10 +435,11 @@ input message: "Deploy Application to QA ?"
 stage name: 'Deploy to QA', concurrency: 1
 node {
     echo "Application Deployed to QA."
-}
-</code></pre>
+}</code></pre>
+        <div class="footer"><i class="fa fa-twitter">&nbsp;alexsotob&nbsp;</i><i class="fa fa-github">&nbsp;lordofthejars</i></div>
       </section>
       <section><img src="images/ui.png" class="schemash">
+        <div class="footer"><i class="fa fa-twitter">&nbsp;alexsotob&nbsp;</i><i class="fa fa-github">&nbsp;lordofthejars</i></div>
       </section>
       <section data-bespoke-backdrop="backdrop backdrop--adathink" class="adathink undefined">
         <h1>Let's wind <br/> down</h1>
@@ -457,6 +459,7 @@ node {
         <aside role="note">Fast is the parameter (10 minutes)</aside>
       </section>
       <section><img src="images/YourAppV2-min.png" class="schemash">
+        <div class="footer"><i class="fa fa-twitter">&nbsp;alexsotob&nbsp;</i><i class="fa fa-github">&nbsp;lordofthejars</i></div>
       </section>
       <section data-bespoke-backdrop="backdrop backdrop--adarise" class="adarise undefined">
         <h1>Questions</h1>
@@ -466,6 +469,15 @@ node {
           <h3>http://lordofthejars.github.io/mock-stub-fake/</h3><i class="fa fa-envelope"></i>
           <h3>asotobu@gmail.com</h3></a>
         <div class="footer"><i class="fa fa-twitter">&nbsp;alexsotob&nbsp;</i><i class="fa fa-github">&nbsp;lordofthejars</i></div>
+      </section>
+      <section><a href="github.com/lordofthejars/starwars" style="border:none"> 
+          <h4>https://github.com/lordofthejars/starwars</h4></a><a href="http://site.mockito.org/" style="border:none"> 
+          <h4>http://site.mockito.org/</h4></a><a href="https://github.com/jayway/powermock" style="border:none"> 
+          <h4>https://github.com/jayway/powermock</h4></a><a href="http://wiremock.org/" style="border:none"> 
+          <h4>http://wiremock.org/</h4></a><a href="http://arquillian.org/" style="border:none"> 
+          <h4>http://arquillian.org/</h4></a><a href="http://byteman.jboss.org/" style="border:none"> 
+          <h4>http://byteman.jboss.org/</h4></a><a href="https://github.com/jenkinsci/workflow-plugin" style="border:none"> 
+          <h4>https://github.com/jenkinsci/workflow-plugin</h4></a>
       </section>
     </article>
     <script src="build/build.js"></script>
